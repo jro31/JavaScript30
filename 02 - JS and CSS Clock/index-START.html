@@ -35,6 +35,7 @@
     }
 
     .clock {
+      /* rem are relative to the root (html) element. In this document, the html font-size is 10px. Therefore 1px would be equal to 0.1rem. 30rem is equal to 300px. */
       width: 30rem;
       height: 30rem;
       border: 20px solid white;
@@ -62,13 +63,56 @@
       background: black;
       position: absolute;
       top: 50%;
+
+      /* The origin is the point along the X-axis at which the element will rotate. By default it's 50% (meaning that the rotation point of the element will be the middle). As we want it to rotate at the right side of the element, we use 100% (or if we wanted it to be the left side of the element, we'd use 0) */
+      transform-origin: 100%;
+
+      /* Divs by default go left-to-right. This gives it a starting position of 12 o'clock */
+      transform: rotate(90deg);
+    }
+
+    .second-hand {
+      /* The 'all' below means that all properties within this div that change will take 0.05s. You could alternatively refer to individual properties, for example:
+      tranition: background 0.05s; */
+      transition: all 0.05s;
+
+      /* See http://cubic-bezier.com/ for more info on cubic-bezier */
+      transition-timing-function: cubic-bezier(0.94, -0.4, 0.04, 2.33);
     }
 
   </style>
 
   <script>
+    const secondHand = document.querySelector('.second-hand');
+    const minuteHand = document.querySelector('.min-hand');
+    const hourHand = document.querySelector('.hour-hand');
+
+    function setDate() {
+      const now = new Date();
+      const seconds = now.getSeconds();
+      const minutes = now.getMinutes();
+      const hours = now.getHours();
+
+      if (seconds === 0) {
+        secondHand.classList.remove('second-hand')
+      } else if ((seconds !== 0) && (secondHand.classList.contains('second-hand') === false)) {
+        secondHand.classList.add('second-hand')
+      };
 
 
+      // The '+ 90' is to offset the 'transform: rotate(90deg)' in the CSS
+      const secondsDegrees = ((seconds / 60) * 360) + 90;
+      secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
+
+      const minutesDegrees = ((minutes / 60) * 360) + 90;
+      minuteHand.style.transform = `rotate(${minutesDegrees}deg)`;
+
+      const hoursDegrees = ((hours / 12) * 360) + 90;
+      hourHand.style.transform = `rotate(${hoursDegrees}deg`;
+    };
+
+    // The setDate function will be called every second (or 1000 milliseconds)
+    setInterval(setDate, 1000);
   </script>
 </body>
 </html>
