@@ -31,28 +31,131 @@
 
     // Array.prototype.filter()
     // 1. Filter the list of inventors for those who were born in the 1500's
+    const fifteen = inventors.filter(inventor => inventor.year >= 1500 && inventor.year < 1600);
+
+    // The above a shorter way of writing:
+
+    // const fifteen = inventors.filter(function(inventor) {
+    //   if(inventor.year >= 1500 && inventor.year < 1600) {
+    //     return true; // If you return true, that means that you keep it (if you don't return true (or something truthy) then you don't keep it, so there's no need for an 'else { return false }' statement here).
+    //   }
+    // });
+
+    console.table(fifteen); // console.table logs an array as a table, so is more sightly than console.log when dealing with arrays.
+
+
+
 
     // Array.prototype.map()
     // 2. Give us an array of the inventors' first and last names
+    const fullNames = inventors.map(inventor => `${inventor.first} ${inventor.last}`)
+    console.log(fullNames)
+
+
+
 
     // Array.prototype.sort()
     // 3. Sort the inventors by birthdate, oldest to youngest
+    // const ordered = inventors.sort(function(a, b) {
+    //   if(a.year > b.year) {
+    //     return 1;
+    //   } else {
+    //     return -1;
+    //   };
+    // });
+
+    // This is the ternary operator shorthand of the above function:
+    const ordered = inventors.sort((a, b) => a.year > b.year ? 1 : -1);
+
+    console.table(ordered);
+
+
+
 
     // Array.prototype.reduce()
     // 4. How many years did all the inventors live?
+    const totalYears = inventors.reduce((total, inventor) => { // Reduce gives you the total from the previous loop (total), and the next element in the array that we're looping over (inventor).
+      return total + (inventor.passed - inventor.year);
+    }, 0);
+    // The '0' here provides an initial value of zero, so on the first loop instead of passing in a total of undefined (which causes the function to not work), you pass in a total of zero.
+
+    console.log(totalYears);
+
+
+
+
 
     // 5. Sort the inventors by years lived
+    // const oldest = inventors.sort(function(a, b) {
+    //   const lastGuy = a.passed - a.year;
+    //   const nextGuy = b.passed - b.year;
+    //   return lastGuy > nextGuy ? -1 : 1;
+    // });
+
+    // The tutorial answer is the one above. Following the same logic as in number 3) above, you could simplify this function to:
+    const oldest = inventors.sort((a, b) => (a.passed - a.year) > (b.passed - b.year) ? -1 : 1);
+
+    console.table(oldest);
+
+
+
+
 
     // 6. create a list of Boulevards in Paris that contain 'de' anywhere in the name
     // https://en.wikipedia.org/wiki/Category:Boulevards_in_Paris
+    // Note that THIS CODE WILL ONLY WORK WHEN RUN IN THE CONSOLE of the above url; it won't work by just opening this document in a browser (hence why it's commented-out).
+
+    // const category = document.querySelector('.mw-category');
+    // const links = Array.from(category.querySelectorAll('a'));
+
+    // querySelector returns a node-list (not an array), and we cannot use .map with this node-list, so instead we turn it into an array by using 'Array.from()'.
+
+    // const de = links
+    //     .map(link => link.textContent)
+    //     .filter(streetName => streetName.includes('de'));
+
+    // You perform these two functions one after the other, so firstly you run .map on links, to give you an array of the street names (which is the textContent contained within each of the links), then you run .filter, keeping the items that contain 'de'.
+
+
+
 
 
     // 7. sort Exercise
     // Sort the people alphabetically by last name
+    const alpha = people.sort((lastOne, nextOne) => {
+      // const [last, first] = lastOne.split(', ');
+      // console.log(last, first)
+      // Instead of using 'const parts', which would put the last name and the first name into an array called parts, we can use 'const [last, first]' to give the last name and the first name their own variable.
+
+      const [aLast, aFirst] = lastOne.split(', ');
+      const [bLast, bFirst] = nextOne.split(', ');
+      return aLast > bLast ? 1 : -1;
+    });
+    console.log(alpha);
+
+
+
 
     // 8. Reduce Exercise
     // Sum up the instances of each of these
     const data = ['car', 'car', 'truck', 'truck', 'bike', 'walk', 'car', 'van', 'bike', 'walk', 'car', 'van', 'car', 'truck' ];
+
+    const transportation = data.reduce(function(obj, vehicle) {
+      if(!obj[vehicle]) {
+        obj[vehicle] = 0;
+      }
+      obj[vehicle]++;
+      return obj;
+    }, {});
+    // '{}' means that we're starting with a blank object
+    // The 'if' statement sees if the vehicle (key) already exists within our object, and if it doesn't exist, then it adds it with an initial value of zero
+    // The item at index [vehicle] within our object, then has 1 added to it (using '++')
+    // 'console.log(obj);' to see this in each loop
+
+    // REMEMBER:
+    // A JavaScript object is equivalent to a Ruby hash.
+
+    console.log(transportation);
 
   </script>
 </body>
