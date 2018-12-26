@@ -1,0 +1,8 @@
+In a method, 'this' refers to the owner object.
+Alone, 'this' refers to the global object.
+In a function, 'this' refers to the global object.
+In a function, in strict mode, 'this' is undefined.
+In an event, 'this' refers to the element that received the event.
+Methods like call(), and apply() can refer 'this' to any object.
+
+In a browser, the global object simply means 'window' (so calling 'alert("Hello");' is the same as 'window.alert("Hello");' (the window is the first thing that gets loaded into the browser).
