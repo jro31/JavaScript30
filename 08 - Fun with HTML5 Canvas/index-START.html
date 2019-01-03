@@ -7,6 +7,58 @@
 <body>
 <canvas id="draw" width="800" height="800"></canvas>
 <script>
+  const canvas = document.querySelector('#draw');
+  const ctx = canvas.getContext('2d');
+  // You don't draw directly onto the 'canvas', you draw onto the 'context' (it can be either 2D or 3D). We therefore want our canvas to be equal in size to our canvas:
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  ctx.strokeStyle = '#BADA55'; // The colour of the line
+  ctx.lineJoin = 'round'; // When the end of a line joins another line it should be rounded
+  ctx.lineCap = 'round'; // The end of a line should be rounded
+  ctx.lineWidth = 100;
+  ctx.globalCompositeOperation = 'multiply'; // This setting is what makes the colour blend together when drawing colours on top of other colours (personally, I think it's better without this). There are a tonne more options other than 'multiply' (see https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalCompositeOperation).
+
+  let isDrawing = false; // When the user clicks down on their mouse, this gets set to true, when they let go, it gets set to false.
+  let lastX = 0;
+  let lastY = 0;
+  let hue = 0;
+  let direction = true;
+
+  function draw(e) {
+    if (!isDrawing) return; // This will stop the function from running if they aren't holding the mouse button down
+    console.log(e);
+    ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`; // hsl = Hue, Saturation, Lightness. See 'http://mothereffinghsl.com/'
+    ctx.beginPath();
+    ctx.moveTo(lastX,lastY);
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
+    [lastX, lastY] = [e.offsetX, e.offsetY]; // This is ES6 shorthand to mean 'lastX = e.offsetX;' and 'lastY = e.offsetY;' - called 'Destructuring an array'
+    hue++; // This increments the hue up by 1 each time, making the weird trippy colours
+    if(hue >= 360) {
+      hue = 0; // Even though this works fine without resetting the hue, doing this saves it getting up into high numbers that we have no need for
+    };
+
+    if(ctx.lineWidth >= 100 || ctx.lineWidth <= 1) {
+      direction = !direction; // If direction is true, change it to false, if it's false, change it to true
+    }
+    if(direction) { // If 'direction' is true
+      ctx.lineWidth++; // The lineWidth goes up
+    } else {
+      ctx.lineWidth--; // The lineWidth goes down
+    };
+  };
+
+  canvas.addEventListener('mousedown', (e) => {
+    isDrawing = true;
+    [lastX, lastY] = [e.offsetX, e.offsetY]; // When the mouse button is pressed (so before the mouse is moved). we update the 'lastX' and 'lastY' to our current position.
+  });
+
+
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mouseup', () => isDrawing = false);
+  canvas.addEventListener('mouseout', () => isDrawing = false);
+  // Inline arrow functions write functions without the need for the 'function' or 'return' keywords
 </script>
 
 <style>
