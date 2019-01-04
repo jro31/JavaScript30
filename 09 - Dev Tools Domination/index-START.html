@@ -6,40 +6,83 @@
 </head>
 <body>
 
-  <p onClick="makeGreen()">×BREAK×DOWN×</p>
+  <p onClick="makeGreen()">×BREAK×DOWN×</p> <!-- This is an inline JavaScript function within the <p> tag - The 'makeGreen()' function will be called whenever anyone clicks on any part of the contents of this tag. It is no different from adding an event listener to this paragraph. -->
 
   <script>
     const dogs = [{ name: 'Snickers', age: 2 }, { name: 'hugo', age: 8 }];
 
     function makeGreen() {
-      const p = document.querySelector('p');
+      const p = document.querySelector('p'); // Note that this selects the first paragraph on the page, and not the clicked paragraph
       p.style.color = '#BADA55';
       p.style.fontSize = '50px';
     }
 
+    // Use 'right-click -> Break on -> attribute modifications' to add a break-point to your code, that will break it with the selected attribute is modified (very similar to binding.pry in Ruby)
+
     // Regular
+    console.log('I\'ll be back');
 
     // Interpolated
+    console.log('Hello, I\'m a %s lover', '💩'); // Whatever is in the second string (💩) will be passed into the first string at '%s', so this will read (in the console): 'Hello, I'm a 💩 lover'
+    // (in ES6 though, just using backticks and ${var} is simpler)
 
     // Styled
+    console.log('%cI am some great text', 'font-size: 50px; background-color: silver'); // Anything after the '%c' will be styled with the CSS in the second string - This can contain any CSS font styling, and some other styling like background-color, text-shadow etc
 
     // warning!
+    console.warn('I\'m a waring'); // Displays a warning in the console
 
     // Error :|
+    console.error('I\'m an error'); // Displays an error in the console
 
     // Info
+    console.info('This is some useful information'); // Displays the string as information in the console (it displays the same as console.log when I do it)
 
     // Testing
+    console.assert(1 === 2, 'That is wrong!'); // This will only fire if the thing is false
+    console.assert(1 === 1, 'This is wrong'); // This will not print to the console because it's true
+
+    // NOTE THAT I COULDN'T GET IT TO WORK LIKE THIS:
+    const p = document.querySelector('p');
+    console.assert(p.classList.contains('×BREAK×DOWN×'), 'This is not within the paragraph'); // This printed to the console, even though the paragraph contains the string
+    console.assert(p.classList.contains('Fish'), 'This is not within the paragraph');
 
     // clearing
+    // console.clear();
+    // This clears the console of all prior messages. I commented it out because I still want to see them.
 
     // Viewing DOM Elements
+    console.log(p);
+    console.dir(p); // Reveals all the different properties and methods for that particular element
 
     // Grouping together
+    dogs.forEach(dog => {
+      console.group(`${dog.name}`); // This will group together the below information into a collapsable and easily readable block of data. To have it collapsed by default you can use 'console.groupCollapsed(`${dog.name}`);'
+      console.log(`This is ${dog.name}`);
+      console.log(`${dog.name} is ${dog.age} years old`);
+      console.log(`${dog.name} is ${dog.age * 7} dog years`);
+      console.groupEnd(`${dog.name}`); // On the video, he said that this string must match that wihin the 'console.group' method. In my testing, it didn't seem to make any difference what was within this string; 'console.groupEnd();' seemed to work exactly the same.
+    });
 
     // counting
+    // Will count how many times you use a particular word or number or object or DOM node or anything else
+    console.count('Jethro'); // Prints 'Jethro: 1'
+    console.count('Jethro'); // Prints 'Jethro: 2'
+    console.count('Jethro'); // Prints 'Jethro: 3'
+    console.count('Jethro'); // Prints 'Jethro: 4'
+    console.count('Jethro'); // Prints 'Jethro: 5'
 
     // timing
+    console.time('fetching data'); // Start the timer
+    fetch('https://api.github.com/users/jro31')
+      .then(data => data.json())
+      .then(data => {
+        console.timeEnd('fetching data'); // This string must match that which you used to start the timer, and will print to the console how long it took to carry out the above process, in this case fetching data from GitHub
+        console.log(data);
+      });
+
+    // table - For when you have an array of objects
+    console.table(dogs);
 
   </script>
 </body>
