@@ -96,28 +96,49 @@
   </div>
 
   <script>
-    function identifyKeyDown(e) {
-      if(e.keyCode === 16) {
-        shiftDown();
+    // let shift_down = false
+
+    // function identifyKeyDown(e) {
+    //   if(e.keyCode === 16) {
+    //     shiftDown();
+    //   };
+    // };
+
+    // function identifyKeyUp(e) {
+    //   if(e.keyCode === 16) {
+    //     shiftUp();
+    //   };
+    // };
+
+    // function shiftDown() {
+    //   shift_down = true;
+    //   console.log(shift_down);
+    // };
+
+    // function shiftUp() {
+    //   shift_down = false;
+    //   console.log(shift_down);
+    // }
+
+    function checkboxChecked(e, checkbox) {
+      console.log(e);
+      console.log(checkbox);
+      if(e.shiftKey === true) {
+        // checkboxes = document.querySelectorAll('.item > input');
+        // checkboxes.forEach(function(checkbox) {
+          console.log(checkbox.checked);
+        // });
+      } else {
+
       };
     };
 
-    function identifyKeyUp(e) {
-      if(e.keyCode === 16) {
-        shiftUp();
-      };
-    };
-
-    function shiftDown() {
-      console.log("shift down");
-    };
-
-    function shiftUp() {
-      console.log("shift up")
-    }
-
-    window.addEventListener('keydown', identifyKeyDown);
-    window.addEventListener('keyup', identifyKeyUp);
+    // window.addEventListener('keydown', identifyKeyDown);
+    // window.addEventListener('keyup', identifyKeyUp);
+    checkboxes = document.querySelectorAll('.item > input');
+    // checkboxes.forEach(checkbox => console.log(checkbox.checked));
+    checkboxes.forEach(checkbox => checkbox.addEventListener('click', function(e) {checkboxChecked(e, checkbox);
+    }));
   </script>
 </body>
 </html>
