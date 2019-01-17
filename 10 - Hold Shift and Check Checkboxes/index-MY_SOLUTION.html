@@ -121,21 +121,29 @@
     // }
 
     function checkboxChecked(e, checkbox) {
-      console.log(e);
-      console.log(checkbox);
+      // console.log(e);
+      // console.log(checkbox);
+      let check = false;
       if(e.shiftKey === true) {
-        // checkboxes = document.querySelectorAll('.item > input');
-        // checkboxes.forEach(function(checkbox) {
-          console.log(checkbox.checked);
-        // });
-      } else {
-
+        if(checkbox.checked === true) {
+          checkboxes.forEach(function(cb) {
+            if(cb.checked === true) {
+              check = true;
+            }
+            if(cb === checkbox) {
+              check = false;
+            };
+            if(check === true) {
+              cb.checked = true;
+            };
+          });
+        };
       };
     };
 
     // window.addEventListener('keydown', identifyKeyDown);
     // window.addEventListener('keyup', identifyKeyUp);
-    checkboxes = document.querySelectorAll('.item > input');
+    let checkboxes = document.querySelectorAll('.item > input');
     // checkboxes.forEach(checkbox => console.log(checkbox.checked));
     checkboxes.forEach(checkbox => checkbox.addEventListener('click', function(e) {checkboxChecked(e, checkbox);
     }));
