@@ -96,55 +96,35 @@
   </div>
 
   <script>
-    // let shift_down = false
-
-    // function identifyKeyDown(e) {
-    //   if(e.keyCode === 16) {
-    //     shiftDown();
-    //   };
-    // };
-
-    // function identifyKeyUp(e) {
-    //   if(e.keyCode === 16) {
-    //     shiftUp();
-    //   };
-    // };
-
-    // function shiftDown() {
-    //   shift_down = true;
-    //   console.log(shift_down);
-    // };
-
-    // function shiftUp() {
-    //   shift_down = false;
-    //   console.log(shift_down);
-    // }
-
     function checkboxChecked(e, checkbox) {
-      // console.log(e);
-      // console.log(checkbox);
       let check = false;
+      let breaker = false;
       if(e.shiftKey === true) {
         if(checkbox.checked === true) {
           checkboxes.forEach(function(cb) {
-            if(cb.checked === true) {
-              check = true;
-            }
-            if(cb === checkbox) {
-              check = false;
-            };
-            if(check === true) {
-              cb.checked = true;
+            if(cb != checkbox && cb.checked === true && breaker === false) {
+              checkboxes.forEach(function(fcb) {
+                if(fcb.checked === true) check = true;
+                if(fcb === checkbox) check = false;
+                if(check === true) fcb.checked = true;
+              });
+              breaker = true;
+            } else if(cb === checkbox && breaker === false) {
+              let checkboxArray = Array.from(checkboxes);
+              let reversed = checkboxArray.reverse();
+              reversed.forEach(function(rcb) {
+                if(rcb.checked === true) check = true;
+                if(rcb === checkbox) check = false;
+                if(check === true) rcb.checked = true;
+              });
+              breaker = true;
             };
           });
         };
       };
     };
 
-    // window.addEventListener('keydown', identifyKeyDown);
-    // window.addEventListener('keyup', identifyKeyUp);
     let checkboxes = document.querySelectorAll('.item > input');
-    // checkboxes.forEach(checkbox => console.log(checkbox.checked));
     checkboxes.forEach(checkbox => checkbox.addEventListener('click', function(e) {checkboxChecked(e, checkbox);
     }));
   </script>
